@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static tailwind_tags custom_tags %}
+{% tailwind_css %}
+
+
+{% block content %}
+
+<div class="flex justify-center mt-10">
+  <h1 class="text-black font-bold text-4xl">Configurações do Setor: </h1>
+</div>
+
+<section class="flex justify-center">
+  <form method="POST">
+  {% csrf_token %}
+  <div class="text-black mt-10">
+    {{ form.as_p }}
+  </div>
+  <div  class="flex justify-center mt-10">
+    <a href="{% url 'edit_event' event.id %}" class="bg-red-600 px-6 py-3 rounded-2xl font-bold">Excluit Setor</a>
+  </div>
+  <div class="flex justify-center mt-10">
+    <button type="submit" class="bg-blue-700 px-6 py-3 rounded-2xl font-bold">Salvar</button>
+  </div>
+
+
+</form>
+</section>
+
+
+{% endblock %}

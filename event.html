@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static tailwind_tags custom_tags %}
+{% tailwind_css %}
+
+{% block content %}
+<main class="text-black min-h-screen">
+<div class="m-10">
+    <h1 class="font-bold text-4xl">{{ event.title }}</h1>
+    <p class="mt-5">{{ event.eventadress.city }} - {{ event.eventadress.neighborhood }} - {{event.eventadress.street}} {{ event.eventadress.number }} </p>
+    <p>Lotação: {{ event.max_capacity }} Pessoas</p>
+</div>
+
+<div class="flex justify-center">
+    <img src="{{ event.image.url }}" alt="Foto do Evento" class="w-[400px]">
+</div>
+
+
+<form method="POST">
+  {% csrf_token %}
+
+  <h2 class="flex justify-center text-2xl font-bold mt-5">Ingressos por Setor:</h2>
+  
+  <div>
+    {% for setor in setores %}
+      {% with disp=disponibilidades|get_item:setor.id %}
+      <p class="flex justify-center mt-5"> {{ setor.title }} ({{ disp }} vagas) </p>
+
+      <div class="flex justify-center mt-10">
+        <button type="button" onclick="descrease('{{ setor.id }}')" class="px-6 py-3 text-4xl">-</button>
+        <button type="button" onclick="inscrease('{{ setor.id }}', {{ disp }})" class="text-4xl">+</button>
+      </div>
+
+      <div id='count_{{ setor.id }}'  class="text-4xl flex justify-center">0</div>
+      <input type="hidden" name="setor_{{ setor.id }}" id="input_{{ setor.id }}">
+      {% endwith %}
+    {% endfor %}
+  </div>
+
+  <div class="flex justify-center mt-5">
+    <button type="submit" class="bg-blue-700 px-6 py-3 rounded-2xl font-bold text-white">Reservar Ingressos</button>
+  </div>
+</form>
+
+
+  <section class="flex justify-center mt-10 mb-10">
+  <a href="{% url 'event_tickets_list' event.id %}" class="bg-blue-700 px-6 py-3 rounded-2xl font-bold text-white">Ingressos</a>
+</section>
+
+
+
+<script>
+  const update=(id,v)=>{document.getElementById('input_'+id).value=v;document.getElementById('count_'+id).innerText=v;}
+  const inscrease=(id, max)=>{let v=+document.getElementById('input_'+id).value;if(v<max)update(id,v+1)}
+  const descrease=(id)=>{let v=+document.getElementById('input_'+id).value;if(v>0)update(id,v-1)}
+</script>
+
+{% endblock %}
+
+
+
+

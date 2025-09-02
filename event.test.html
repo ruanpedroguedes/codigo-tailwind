@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static tailwind_tags custom_tags %}
+{% tailwind_css %}
+
+{% block content %}
+<main class="text-black">
+<div class="m-10">
+    <h1 class="font-bold text-4xl">{{ event.title }}</h1>
+    <p class="mt-5">{{ event.eventadress.city }} - {{ event.eventadress.neighborhood }} - {{event.eventadress.street}} {{ event.eventadress.number }} </p>
+    <p>Lotação: {{ event.max_capacity }} Pessoas</p>
+</div>
+
+<div class="flex justify-center">
+    <img src="{{ event.image.url }}" alt="Foto do Evento" class="w-[400px]">
+</div>
+
+
+<form method="POST">
+  {% csrf_token %}
+ <div>
+  <h2 class="flex justify-center font-bold text-2xl mt-5">Ingressos por setor:</h2>
+  {% for setor in setores %}
+    {% with disp=disponibilidades|get_item:setor.id %}
+      <p class="flex justify-center mt-5">{{ setor.title }} ({{ disp }} disponíveis) </p>
+
+      <div>
+        <button type="button" onclick="decrease('{{ setor.id }}')">-</button>
+        <button type="button" onclick="increase('{{ setor.id }}', {{ disp }})">+</button>
+      </div>
+      <div id="count_{{ setor.id }}">0</div>
+      <input type="hidden" name="setor_{{ setor.id }}" id="input_{{ setor.id }}" value="0">
+    {% endwith %}
+  {% endfor %}
+</div>
+
+  <div>
+    <button type="submit">Reserva Ingressos</button>
+  </div>
+</form>
+</main>
+
+<script>
+  const update=(id,v)=>{document.getElementById('input_'+id).value=v;document.getElementById('count_'+id).innerText=v;}
+  const increase=(id,max)=>{let v=+document.getElementById('input_'+id).value;if(v<max)update(id,v+1);}
+  const decrease=(id)=>{let v=+document.getElementById('input_'+id).value;if(v>0)update(id,v-1);}
+</script>
+
+
+
+{% endblock %}
+
+
+
+

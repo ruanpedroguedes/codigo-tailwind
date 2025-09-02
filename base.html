@@ -1,0 +1,31 @@
+{% load static %}
+{% load static tailwind_tags custom_tags %}
+{% tailwind_css %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body class="bg-white">
+  <header class="bg-blue-700 font-sans">
+    <nav class="flex justify-between">
+      <a href="/"><img src="/event_images/headerlogo.png" alt="foto do header"></a>
+      <div class="flex items-center gap-6">
+        <form method="POST" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button class="text-3xl">Logout</button>
+        </form>
+        <a href="#"><img src="/event_images/perfil.png" alt="foto de perfil" class="w-2- h-20"></a>
+      </dir>
+    </nav>
+  </header>
+
+
+  <main>
+    <div> {% block content %} {% endblock %} </div>
+  </main>
+</body>
+</html>

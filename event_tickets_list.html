@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static tailwind_tags custom_tags %}
+{% tailwind_css %}
+
+{% block content %}
+<h2 class="text-3xl font-bold m-10 text-black">Ingresso {{ event.title }} </h2>
+
+<table class="flex justify-center">
+  <tr class="text-black">
+    <th>ID</th>
+    <th>SETOR</th>
+    <th>STATUS</th>
+    <th>CÓDIGO</th>
+    <th>DATA</th>
+  </tr>
+
+  {% for ticket in tickets %}
+  <tr class="text-black">
+    <td class="px-6 h-12"> {{ticket.id}} </td>
+    <td class="px-6 h-12"> {{ ticket.sector.title }} </td>
+    <td class="px-6 h-12"> {{ticket.status}} </td>
+    <td class="px-6 h-12"> {{ ticket.ticket_code }} </td>
+     <td class="px-6 h-12"> {{ ticket.created_at }} </td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

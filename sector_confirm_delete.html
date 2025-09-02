@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static tailwind_tags custom_tags %}
+{% tailwind_css %}
+
+{% block content %}
+
+<main>
+  <div class="flex justify-center mt-20">
+    <h1 class="text-4xl text-black font-bold">Confirmação de exclusão</h1>
+  </div>
+
+  <p class="text-black flex justify-center mt-5">Tem certeza que deseja excluir o {{object.title}}</p>
+
+  <form method="post" class="flex justify-center mt-5">
+    {% csrf_token %}
+    <div class="flex gap-6">
+      <button type="submit" class="bg-red-600 text-white font-bold py-2 px-6 rounded-2xl">Sim QUERO EXCLUIR</button>
+      <a href="{% url 'edit_event' event_id=object.Event_id.id %}" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-2xl">Cancelar</a>
+    </div>
+  </form>
+</main>
+
+
+{% endblock %}

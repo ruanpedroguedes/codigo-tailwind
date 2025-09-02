@@ -1,0 +1,28 @@
+{% load static %}
+{% load static tailwind_tags custom_tags %}
+{% tailwind_css %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body class=" flex min-h-screen bg-white font-sans">
+  <form method="POST" action="{% url 'login' %}" class="px-8 max-w-md m-auto space-x-6">
+    {% csrf_token %}
+    <div class="flex flex-col justify-center items-center min-h-screen">
+      <h1 class="font-bold text-4xl text-blue-700 mt-10 mb-10">Faça seu Login</h1>
+      <label>
+        <input type="text" name="username" placeholder="CPF OU EMAIL" class="text-black w-[250px] h-12 mt-5 mb-5 border border-black">
+      </label>
+       <label>
+          <input type="text" name="password" placeholder="SUA SENHA"  class="text-black w-[250px] h-12 mt-5 mb-5 border border-black">
+      </label>
+      <button type="submit" class="bg-blue-700 w-[300px] py-3 font-bold text-2xl mt-10 rounded-2xl">Logar</button>
+    </div>
+  </form>
+  <img src="/event_images/logo.png" alt="Foto da logo do Login" class="hidden md:block w-1/2 object-cover">
+</body>
+</html>
