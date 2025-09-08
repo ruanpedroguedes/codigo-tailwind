@@ -26,7 +26,7 @@
                     <button type="button" onclick="inscrease('{{ setor.id }}')" class="px-4 py-2 text-2xl">+</button>
                 </div>
                 <div id="count_{{setor.id}}" class="text-2xl mt-2">0</div>
-                <input type="hidden" name="setor_{{setor.id}}" id="input_{{setor.id}}">
+                <input type="hidden" name="setor_{{setor.id}}" id="input_{{setor.id}}" value="0">
             {% endfor %}
         </div>
 
@@ -36,7 +36,7 @@
     </form>
 
     <section class="flex justify-center mt-10 mb-10">
-        <a href="{% url 'event_tickets_list' event.id %}">Ingressos</a>
+        <a href="{% url 'event_tickets_list' event.id %}" class="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white">Ingressos</a>
     </section>
 </main>
 
