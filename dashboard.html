@@ -42,24 +42,57 @@
 
 <div class="flex justify-center gap-6 mt-10">
   <canvas id="pie" width="700" height="700"></canvas>
-  <canvas id="statusPie" width="700" height="700"></canvas>
+  <canvas id="Grafico1" width="700" height="700"></canvas>
 </div>
-
 
 </main>
 
-
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-  new Chart(pie, {
-    type:'doughnut',
-    data:{labels:['Disponíveis','Reservados'],datasets:[{data:[{{ percent_disponiveis }},{{ percent_emitidos }}],backgroundColor:['#0c0','#f44']}]}
-  })
-  new Chart(statusPie, {
-    type:'doughnut',
-    data:{labels:['Pendentes','Realizados'],datasets:[{data:[{{ total_pendentes }},{{ total_realizados }}],backgroundColor:['#fc4','#0a6']}]}
-  })
+  const ctx = document.getElementById('pie');
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['Disponviveis', 'Reservados'],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{ disponiveis }}, {{ emitidos }}],
+        borderWidth: 1,
+        backgroundColor: ['#9B3065', '#9BD065'],
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  const ctx2 = document.getElementById('Grafico1');
+   new Chart(ctx2, {
+    type: 'pie',
+    data: {
+      labels: ['Reservados', 'Validados'],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{ realizados }}, {{ total_realizado }}],
+        borderWidth: 1,
+        backgroundColor: ['#9B3065', '#9BD065'],
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 </script>
+
 
 {% endblock %}
