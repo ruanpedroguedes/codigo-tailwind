@@ -4,63 +4,63 @@
 {% tailwind_css %}
 
 {% block content %}
+<main class="m-10">
 
-<div class="m-10">
-    <h1 class="text-3xl font-bold">Dashboard: {{event.title}}</h1>
-</div>
+    <h1 class="text-3xl font-bold mb-6">Dashboard: {{ event.title }}</h1>
 
-<div class="flex justify-center">
-    <h1 class="text-3xl font-bold">Resumo de Ingressos</h1>
-</div>
+    <div class="flex justify-center mt-10 mb-10">
+        <h1 class="font-bold text-4xl">Resumo dos Ingressos</h1>
+    </div>
 
-<form method="get" class="mb-6 flex gap-3">
-    <select name="setor" class="border p-2">
-      <option value="">Todos</option>
-      {% for s in setores %}
-        <option value="{{ s.id }}" {% if request.GET.setor == s.id|stringformat:"s" %}selected{% endif %}>{{ s.title }}</option>
-      {% endfor %}
-    </select>
-    <button type="submit" class="bg-blue-600 text-white px-3 py-1">Filtrar</button>
-</form>
+    <section class="flex justify-center gap-6 mb-10">
+        <div class="bg-green-700 w-[300px] font-light text-2xl text-white flex flex-col items-center justify-center text-center border border-black">
+            <h1>Ingressos Disponíveis</h1>
+            <p>{{ disponiveis }}</p>
+        </div>
+        <div class="bg-red-700 w-[300px] font-light text-2xl text-white flex flex-col items-center justify-center text-center border border-black">
+            <h1>Ingressos Emitidos</h1>
+            <p>{{ emitidos }}</p>
+        </div>
+        <div class="bg-blue-700 w-[300px] font-light text-2xl text-white flex flex-col items-center justify-center text-center border border-black">
+            <h1>Ingressos Validados</h1>
+            <p>{{ validados }}</p>
+        </div>
+    </section>
 
-<div class="flex justify-center m-10 gap-4">
-  <div class="bg-blue-700 text-white w-[250px] h-48 rounded-2xl shadow-lg flex flex-col items-center justify-center hover:scale-105 transition-transform duration-200">
-      <h1 class="text-lg mb-2">Ingressos Disponíveis</h1>
-      <div class="text-3xl font-extrabold">{{ disponiveis }}</div>
-  </div>
-  <div class="bg-green-700 text-white w-[250px] h-48 rounded-2xl shadow-lg flex flex-col items-center justify-center hover:scale-105 transition-transform duration-200">
-      <h1 class="text-lg mb-2">Ingressos Reservados</h1>
-      <div class="text-3xl font-extrabold">{{ emitidos }}</div>
-  </div>
-  <div class="bg-red-600 text-white w-[250px] h-48 rounded-2xl shadow-lg flex flex-col items-center justify-center hover:scale-105 transition-transform duration-200">
-      <h1 class="text-lg mb-2">Ingressos Validados</h1>
-      <div class="text-3xl font-extrabold">{{ validados }}</div>
-  </div>
-</div>
+   <form method="GET">
+        {% csrf_token %}
+        <select name="setor">
+            <option value="">SETORES</option>
+            {% for s in setores %}
+                <option value="{{ s.id }}" {% if request.GET.setor ==  s.id|stringformat:"s" %}selected{% endif %}>{{s.title}}</option>
+            {% endfor %}
+        </select>
+   </form>
 
-
-
-<div class="flex justify-center gap-6 mt-10">
-  <canvas id="pie" width="700" height="700"></canvas>
-  <canvas id="Grafico1" width="700" height="700"></canvas>
-</div>
-
+   <div class="flex justify-center lg:flex-col items-center">
+        <div>
+            <canvas id="grafico01" class="w-[400px] h-[400px]"></canvas>
+        </div>
+        <div>
+            <canvas id="grafico02" class="w-[400px] h-[400px]"></canvas>
+        </div>
+   </div>
+   
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  const ctx = document.getElementById('pie');
+  const ctx = document.getElementById('grafico01');
 
   new Chart(ctx, {
     type: 'pie',
     data: {
-      labels: ['Disponviveis', 'Reservados'],
+      labels: ['Disponiveis', 'Emitidos'],
       datasets: [{
         label: '# of Votes',
-        data: [{{ disponiveis }}, {{ emitidos }}],
-        borderWidth: 1,
-        backgroundColor: ['#9B3065', '#9BD065'],
+        data: [{{disponiveis}}, {{emitidos}}],
+        borderWidth: 1
       }]
     },
     options: {
@@ -72,16 +72,16 @@
     }
   });
 
-  const ctx2 = document.getElementById('Grafico1');
-   new Chart(ctx2, {
+const ctx2 = document.getElementById('grafico02');
+
+  new Chart(ctx2, {
     type: 'pie',
     data: {
-      labels: ['Reservados', 'Validados'],
+      labels: {{ labels_setor|safe }},
       datasets: [{
         label: '# of Votes',
-        data: [{{ realizados }}, {{ total_realizado }}],
-        borderWidth: 1,
-        backgroundColor: ['#9B3065', '#9BD065'],
+        data: [ {{ data_setor|safe }} ],
+        borderWidth: 1
       }]
     },
     options: {
@@ -93,6 +93,7 @@
     }
   });
 </script>
+
 
 
 {% endblock %}
