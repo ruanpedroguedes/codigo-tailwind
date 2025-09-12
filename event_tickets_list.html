@@ -1,30 +1,49 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load static tailwind_tags custom_tags %}
+{% load static tailwind_tags %}
 {% tailwind_css %}
 
 {% block content %}
-<h2 class="text-3xl font-bold m-10 text-black">Ingresso {{ event.title }} </h2>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
-<table class="flex justify-center">
-  <tr class="text-black">
-    <th>ID</th>
-    <th>SETOR</th>
-    <th>STATUS</th>
-    <th>CÓDIGO</th>
-    <th>DATA</th>
-  </tr>
+<table class="flex justify-center mt-10">
+    <tr>
+        <th class="px-6 h-12">ID</th>
+        <th class="px-6 h-12">SETOR</th>
+        <th class="px-6 h-12">STATUS</th>
+        <th class="px-6 h-12">CÓDIGO</th>
+        <th class="px-6 h-12">DATE</th>
+        <th class="px-6 h-12">Nome do Cliente</th>
+        <th class="px-6 h-12">Cpf do Cliente</th>
+        <th class="px-6 h-12">Email do Cliente</th>
+    </tr>
 
-  {% for ticket in tickets %}
-  <tr class="text-black">
-    <td class="px-6 h-12"> {{ticket.id}} </td>
-    <td class="px-6 h-12"> {{ ticket.sector.title }} </td>
-    <td class="px-6 h-12"> {{ticket.status}} </td>
-    <td class="px-6 h-12"> {{ ticket.ticket_code }} </td>
-     <td class="px-6 h-12"> {{ ticket.created_at }} </td>
-  </tr>
-  {% endfor %}
+{% for ticket in tickets %}
+    <tr id="ticket-{{ticket.id}}">
+        <td class="px-6 h-12">
+            <a href="#" onclick="downloadPDF('ticket-{{ticket.id}}')" class="text-blue-700 font-bold">{{ticket.id}}</a>
+        </td>
+        <td class="px-6 h-12">{{ticket.sector.title}}</td>
+        <td class="px-6 h-12">{{ticket.status}}</td>
+        <td class="px-6 h-12">{{ticket.ticket_code}}</td>
+        <td class="px-6 h-12">{{ticket.create_at}}</td>
+        <td class="px-6 h-12">{{ticket.nome_cliente}}</td>
+        <td class="px-6 h-12">{{ticket.cpf_cliente}}</td>
+        <td class="px-6 h-12">{{ticket.email_cliente}}</td>
+    </tr>
+    
+{% endfor %}
+
 </table>
+
+<script>
+function downloadPDF(rowId) {
+  const element = document.getElementById(rowId);
+  html2pdf().from(element).save();
+}
+</script>
+
+
 
 
 {% endblock %}
